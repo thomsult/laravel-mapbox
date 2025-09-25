@@ -7,7 +7,7 @@
     "authors": [
         {
             "name": "Sultan Thomas",
-            "email": "votre@email.com"
+            "email": "thomsult@gmail.com"
         }
     ],
     "require": {
@@ -18,9 +18,9 @@
         "illuminate/cache": "^9.0|^10.0|^11.0|^12.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^7.0|^8.0|^9.0",
-        "phpunit/phpunit": "^9.0|^10.0",
-        "mockery/mockery": "^1.4"
+        "mockery/mockery": "^1.6",
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-laravel": "^4.0"
     },
     "autoload": {
         "psr-4": {
@@ -45,6 +45,16 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "test": [
+            "composer install",
+            "./vendor/bin/pest",
+            "rm -R ./vendor"
+        ]
     }
 }

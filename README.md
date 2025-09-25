@@ -14,7 +14,7 @@ Un package Laravel élégant et typé pour intégrer les APIs Mapbox (geocoding,
 - 📍 **Support complet** - Search, Suggestions
 - 🌍 **Multi-langues** - Support des langues et pays
 - ⚡ **Laravel intégré** - Service Provider, Facade, Configuration
-<!-- - 🧪 **Testé** - Tests unitaires et d'intégration -->
+- 🧪 **Testé** - Tests unitaires et d'intégration
 
 ## 📋 Prérequis
 
@@ -213,6 +213,14 @@ Artisan::command('mapbox:test', function () {
     }
 });
 ```
+## 🧪 Tests
+
+### Tests unitaires
+
+```bash
+composer test
+```
+
 ## 📚 API Reference
 
 ### Classes principales
