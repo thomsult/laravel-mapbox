@@ -3,19 +3,21 @@
 namespace Thomsult\LaravelMapbox\Services;
 
 use GuzzleHttp\Client;
-use Thomsult\LaravelMapbox\Services\Interactive\InteractiveApi;
+use Illuminate\Support\Arr;
+use Thomsult\LaravelMapbox\Interfaces\MapboxApiInterface;
+use Thomsult\LaravelMapbox\Services\Interactive\SearchBoxAPI;
 
-class MapboxApi extends Client
+class MapboxApi extends Client implements MapboxApiInterface
 {
-  use InteractiveApi;
-  
+  use SearchBoxAPI;
+
 
   public function __construct(
     private string $session_token,
     private string $access_token,
     public string $base_endpoint,
-    array $config = [])
-  {
+    array $config = []
+  ) {
     parent::__construct($config);
   }
 
@@ -23,9 +25,16 @@ class MapboxApi extends Client
   {
     // Implement your logic to retrieve the auth session token
     return [
-      'access_token' => $this->access_token,
-      'session_token' => $this->session_token
+      ...$this->getSessionToken(),
+      ...$this->getAccessToken()
     ];
   }
-
+  public function getSessionToken(): array
+  {
+    return ['session_token' => $this->session_token];
+  }
+  public function getAccessToken(): array
+  {
+    return ['access_token' => $this->access_token];
+  }
 }

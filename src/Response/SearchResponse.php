@@ -5,7 +5,7 @@ namespace Thomsult\LaravelMapbox\Response;
 use Illuminate\Support\Collection;
 use Thomsult\LaravelMapbox\Response\Suggestions\Suggestion;
 
-readonly class SearchMapboxResponse
+readonly class SearchResponse
 {
     /** @param Collection<int, Suggestion> $suggestions */
     public function __construct(

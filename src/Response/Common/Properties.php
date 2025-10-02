@@ -9,7 +9,7 @@ use Thomsult\LaravelMapbox\Response\Common\Coordinates;
 
 readonly class Properties extends AbstractPlace
 {
-     public function __construct(
+    public function __construct(
         string $name,
         ?string $name_preferred,
         string $mapbox_id,
@@ -17,7 +17,7 @@ readonly class Properties extends AbstractPlace
         ?string $address,
         ?string $full_address,
         string $place_formatted,
-        Context $context,
+        ?Context $context,
         string $language,
         ?string $maki,
         ?array $poi_category,
@@ -31,15 +31,30 @@ readonly class Properties extends AbstractPlace
         ?int $added_distance,
         ?int $added_time,
         // Champs supplémentaires
-        public Coordinates $coordinates,
+        public ?Coordinates $coordinates,
         public ?array $bbox = null,
     ) {
         parent::__construct(
-            $name, $name_preferred, $mapbox_id, $feature_type,
-            $address, $full_address, $place_formatted, $context,
-            $language, $maki, $poi_category, $poi_category_ids, $brand,
-            $brand_ids, $external_ids, $metadata, $distance, $eta,
-            $added_distance, $added_time
+            $name,
+            $name_preferred,
+            $mapbox_id,
+            $feature_type,
+            $address,
+            $full_address,
+            $place_formatted,
+            $context,
+            $language,
+            $maki,
+            $poi_category,
+            $poi_category_ids,
+            $brand,
+            $brand_ids,
+            $external_ids,
+            $metadata,
+            $distance,
+            $eta,
+            $added_distance,
+            $added_time
         );
     }
 
@@ -70,6 +85,4 @@ readonly class Properties extends AbstractPlace
             bbox: $data['bbox'] ?? null,
         );
     }
-
-
 }

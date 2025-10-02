@@ -18,4 +18,24 @@ enum PlaceType: string
     case POI = 'poi';
     case CATEGORY = 'category';
     case UNKNOWN = 'unknown';
+
+
+    public static function fromValue(string $value): self
+    {
+        return match ($value) {
+            'country' => self::COUNTRY,
+            'region' => self::REGION,
+            'postcode' => self::POSTCODE,
+            'district' => self::DISTRICT,
+            'place' => self::PLACE,
+            'city' => self::CITY,
+            'locality' => self::LOCALITY,
+            'neighborhood' => self::NEIGHBORHOOD,
+            'street' => self::STREET,
+            'address' => self::ADDRESS,
+            'poi' => self::POI,
+            'category' => self::CATEGORY,
+            default => self::UNKNOWN,
+        };
+    }
 }

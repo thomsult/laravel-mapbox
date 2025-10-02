@@ -28,9 +28,4 @@ abstract readonly class AbstractPlace
         public ?int $added_distance = null,
         public ?int $added_time = null,
     ) {}
-
-    public function getFullName(): string
-    {
-        return sprintf('%s, %s', $this->name, $this->place_formatted);
-    }
 }
