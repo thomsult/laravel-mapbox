@@ -1,8 +1,8 @@
 <?php
 
-namespace Thomsult\LaravelMapbox\Request;
+namespace Thomsult\LaravelMapbox\Requests;
 
-use Thomsult\LaravelMapbox\Request\Options\SearchOptions;
+use Thomsult\LaravelMapbox\Requests\Options\SearchOptions;
 
 /**
  * SearchRequest

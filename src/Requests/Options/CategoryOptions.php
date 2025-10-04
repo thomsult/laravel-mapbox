@@ -1,6 +1,6 @@
 <?php
 
-namespace Thomsult\LaravelMapbox\Request\Options;
+namespace Thomsult\LaravelMapbox\Requests\Options;
 
 /*
  * CategoryOptions

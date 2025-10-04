@@ -1,9 +1,9 @@
 <?php
 
-namespace Thomsult\LaravelMapbox\Request;
+namespace Thomsult\LaravelMapbox\Requests;
 
-use Thomsult\LaravelMapbox\Request\Options\ForwardOptions;
-use Thomsult\LaravelMapbox\Request\Options\SearchOptions;
+use Thomsult\LaravelMapbox\Requests\Options\ForwardOptions;
+use Thomsult\LaravelMapbox\Requests\Options\SearchOptions;
 
 /**
  * ForwardRequest

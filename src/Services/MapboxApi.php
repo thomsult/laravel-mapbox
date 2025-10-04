@@ -3,9 +3,8 @@
 namespace Thomsult\LaravelMapbox\Services;
 
 use GuzzleHttp\Client;
-use Illuminate\Support\Arr;
 use Thomsult\LaravelMapbox\Interfaces\MapboxApiInterface;
-use Thomsult\LaravelMapbox\Services\Interactive\SearchBoxAPI;
+use Thomsult\LaravelMapbox\Services\Api\SearchBoxAPI;
 
 class MapboxApi extends Client implements MapboxApiInterface
 {

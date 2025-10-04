@@ -1,6 +1,6 @@
 <?php
 
-namespace Thomsult\LaravelMapbox\Request;
+namespace Thomsult\LaravelMapbox\Requests;
 
 class ListCategoryRequest extends AbstractRequest
 {

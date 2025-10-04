@@ -13,5 +13,4 @@ return [
         'category_list_endpoint' => 'list/category',
         'reverse_endpoint' => 'reverse',
     ],
-    'cache_ttl' => 3600,
 ];

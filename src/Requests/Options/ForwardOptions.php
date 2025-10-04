@@ -1,6 +1,6 @@
 <?php
 
-namespace Thomsult\LaravelMapbox\Request\Options;
+namespace Thomsult\LaravelMapbox\Requests\Options;
 
 /*
  * ForwardOptions
@@ -10,18 +10,19 @@ namespace Thomsult\LaravelMapbox\Request\Options;
 class ForwardOptions
 {
   public function __construct(
-    public ?string $language = '',
-    public ?string $proximity = '',
-    public ?string $bbox = '',
-    public ?string $country = '',
-    public ?string $types = '',
-    public ?string $poi_category = '',
-    public ?string $poi_category_exclusions = '',
-    public ?bool $auto_complete = false,
-    public ?string $eta_type = '',
-    public ?string $navigation_profile = '',
-    public ?string $origin = ''
+    public ?string $language = null,
+    public ?string $proximity = null,
+    public ?string $bbox = null,
+    public ?string $country = null,
+    public ?string $types = null,
+    public ?string $poi_category = null,
+    public ?string $poi_category_exclusions = null,
+    public ?bool $auto_complete = null,
+    public ?string $eta_type = null,
+    public ?string $navigation_profile = null,
+    public ?string $origin = null
   ) {}
+
 
   public function toArray(): array
   {

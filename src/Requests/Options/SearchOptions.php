@@ -1,26 +1,27 @@
 <?php
 
-namespace Thomsult\LaravelMapbox\Request\Options;
+namespace Thomsult\LaravelMapbox\Requests\Options;
 
 /*
  * SearchOptions
  * Represents the options available for a search request.
  */
-class SearchOptions 
+
+class SearchOptions
 {
   public function __construct(
-    public ?array $types = [],
-    public ?int $limit = 10,
-    public ?string $country = '',
-    public ?string $language = '',
+    public ?array $types = null,
+    public ?int $limit = null,
+    public ?string $country = null,
+    public ?string $language = null,
 
-    public ?string $proximity = '',
-    public ?string $bbox = '',
-    public ?string $poi_category = '',
-    public ?string $poi_category_exclusions = '',
-    public ?string $eta_type = '',
-    public ?string $navigation_profile = '',
-    public ?string $origin = '',
+    public ?string $proximity = null,
+    public ?string $bbox = null,
+    public ?string $poi_category = null,
+    public ?string $poi_category_exclusions = null,
+    public ?string $eta_type = null,
+    public ?string $navigation_profile = null,
+    public ?string $origin = null,
 
   ) {}
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace Thomsult\LaravelMapbox\Request;
+namespace Thomsult\LaravelMapbox\Requests;
 
-use Thomsult\LaravelMapbox\Request\Options\ReverseOptions;
-use Thomsult\LaravelMapbox\Request\Options\SearchOptions;
+use Thomsult\LaravelMapbox\Requests\Options\ReverseOptions;
+use Thomsult\LaravelMapbox\Requests\Options\SearchOptions;
 
 /**
  * ReverseRequest

@@ -1,6 +1,6 @@
 <?php
 
-namespace Thomsult\LaravelMapbox\Request\Options;
+namespace Thomsult\LaravelMapbox\Requests\Options;
 
 use Thomsult\LaravelMapbox\Enums\PlaceType;
 
@@ -13,7 +13,7 @@ class ReverseOptions
 {
   public function __construct(
     public ?string $language = null,
-    public ?int $limit = 10,
+    public ?int $limit = null,
     public ?string $country = null,
     public ?string $types = null,
 

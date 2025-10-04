@@ -2,12 +2,12 @@
 
 namespace Thomsult\LaravelMapbox\Interfaces;
 
-use Thomsult\LaravelMapbox\Request\CategoryRequest;
-use Thomsult\LaravelMapbox\Request\ForwardRequest;
-use Thomsult\LaravelMapbox\Request\ListCategoryRequest;
-use Thomsult\LaravelMapbox\Request\RetrieveRequest;
-use Thomsult\LaravelMapbox\Request\ReverseRequest;
-use Thomsult\LaravelMapbox\Request\SearchRequest;
+use Thomsult\LaravelMapbox\Requests\CategoryRequest;
+use Thomsult\LaravelMapbox\Requests\ForwardRequest;
+use Thomsult\LaravelMapbox\Requests\ListCategoryRequest;
+use Thomsult\LaravelMapbox\Requests\RetrieveRequest;
+use Thomsult\LaravelMapbox\Requests\ReverseRequest;
+use Thomsult\LaravelMapbox\Requests\SearchRequest;
 use Thomsult\LaravelMapbox\Response\CategoriesListResponse;
 use Thomsult\LaravelMapbox\Response\FeaturesResponse;
 use Thomsult\LaravelMapbox\Response\SearchResponse;

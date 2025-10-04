@@ -11,7 +11,7 @@ Un package Laravel élégant et typé pour intégrer les APIs Mapbox (geocoding,
 - 🎯 **API typée** - Auto-complétion complète et type safety
 - 🚀 **Fluent API** - Interface intuitive
 - 🔧 **Configuration simple** - Prêt à l'emploi en quelques minutes
-- 📍 **Support complet** - Search, Suggestions
+- 📍 **Support complet** - Search, Suggestions, Catégories
 - 🌍 **Multi-langues** - Support des langues et pays
 - ⚡ **Laravel intégré** - Service Provider, Facade, Configuration
 - 🧪 **Testé** - Tests unitaires et d'intégration
@@ -53,13 +53,13 @@ return [
     'api_version' => 'v1/',
     'search' => [
         'base_endpoint' => 'search/searchbox/',
-        'forward_endpoint' => 'forward', //not implements
+        'forward_endpoint' => 'forward',
         'suggest_endpoint' => 'suggest',
         'retrieve_endpoint' => 'retrieve',
-        'category_endpoint' => 'category', //not implements
-        'list_categories_endpoint' => 'list/category' //not implements
+        'category_endpoint' => 'category',
+        'category_list_endpoint' => 'list/category',
+        'reverse_endpoint' => 'reverse',
     ],
-    'cache_ttl' => 3600,
 ];
 ```
 
