@@ -2,6 +2,7 @@
 
 namespace Thomsult\LaravelMapbox\Services\Api;
 
+use Closure;
 use Thomsult\LaravelMapbox\Requests\CategoryRequest;
 use Thomsult\LaravelMapbox\Requests\ForwardRequest;
 use Thomsult\LaravelMapbox\Requests\ListCategoryRequest;
@@ -15,105 +16,79 @@ use Thomsult\LaravelMapbox\Response\SearchResponse;
 trait SearchBoxAPI
 {
 
-  public function autocomplete(SearchRequest $request): SearchResponse
-  {
-    $response = $this->request('GET', $this->base_endpoint .
-      config('mapbox.search.suggest_endpoint'), [
-      'query' => [
-        'q' => $request->getQuery(),
-        ...($request->getOptions() ?? []),
-        ...$this->getAuthSessionToken()
-      ],
-      'cache' => [
-        'enabled' => config('mapbox.cache_ttl') > 0,
-        'duration' => config('mapbox.cache_ttl')
-      ]
-    ]);
-    if ($response->getStatusCode() !== 200) {
-      throw new \Exception('Mapbox API request failed');
-    }
 
-    return SearchResponse::fromResponse($response);
+
+  public function autocomplete(?callable $builder): self
+  {
+    $this->requestConfig = new SearchRequest('GET', $this->base_endpoint . config('mapbox.search.suggest_endpoint'));
+    $this->responseClass = SearchResponse::class;
+    $this->requestAuthConfig = $this->getAuthSessionToken();
+
+    if ($builder) {
+      $builder($this->requestConfig); // le dev configure la requête
+    }
+    return $this;
   }
 
-  public function retrieve(RetrieveRequest $request): FeaturesResponse
+  public function retrieve(?callable $builder): self
   {
-    $response = $this->request('GET', $this->base_endpoint . config('mapbox.search.retrieve_endpoint') . "/" . $request->getId(), [
-      'query' => [
-        ...($request->getOptions() ?? []),
-        ...$this->getAuthSessionToken()
-      ]
-    ]);
-    if ($response->getStatusCode() !== 200) {
-      throw new \Exception('Mapbox API request failed');
-    }
+    $this->requestConfig = new RetrieveRequest('GET', $this->base_endpoint . config('mapbox.search.retrieve_endpoint') . "/");
+    $this->responseClass = FeaturesResponse::class;
+    $this->requestAuthConfig = $this->getAuthSessionToken();
 
-    return FeaturesResponse::fromResponse($response);
+    if ($builder) {
+      $builder($this->requestConfig); // le dev configure la requête
+    }
+    return $this;
   }
 
-  public function forward(ForwardRequest $request): FeaturesResponse
+  public function forward(?callable $builder): self
   {
-    $response = $this->request('GET', $this->base_endpoint .
-      config('mapbox.search.forward_endpoint'), [
-      'query' => [
-        'q' => $request->getQuery(),
-        ...($request->getOptions() ?? []),
-        ...$this->getAccessToken()
-      ]
-    ]);
-    if ($response->getStatusCode() !== 200) {
-      throw new \Exception('Mapbox API request failed');
+    $this->requestConfig = new ForwardRequest('GET', $this->base_endpoint . config('mapbox.search.forward_endpoint'));
+    $this->responseClass = FeaturesResponse::class;
+    $this->requestAuthConfig = $this->getAccessToken();
+
+    if ($builder) {
+      $builder($this->requestConfig); // le dev configure la requête
     }
 
-    return FeaturesResponse::fromResponse($response);
+    return $this;
+  }
+  public function category(?callable $builder): self
+  {
+    $this->requestConfig = new CategoryRequest('GET', $this->base_endpoint . config('mapbox.search.category_endpoint'));
+    $this->responseClass = FeaturesResponse::class;
+    $this->requestAuthConfig = $this->getAccessToken();
+
+    if ($builder) {
+      $builder($this->requestConfig); // le dev configure la requête
+    }
+
+    return $this;
   }
 
-  public function category(CategoryRequest $request): FeaturesResponse
+  public function categoryList(?callable $builder): self
   {
-    $response = $this->request('GET', $this->base_endpoint .
-      config('mapbox.search.category_endpoint') . "/" . $request->getId(), [
-      'query' => [
-        ...($request->getOptions() ?? []),
-        ...$this->getAccessToken()
-      ]
-    ]);
-    if ($response->getStatusCode() !== 200) {
-      throw new \Exception('Mapbox API request failed');
+    $this->requestConfig = new ListCategoryRequest('GET', $this->base_endpoint . config('mapbox.search.category_list_endpoint'));
+    $this->responseClass = CategoriesListResponse::class;
+    $this->requestAuthConfig = $this->getAccessToken();
+
+    if ($builder) {
+      $builder($this->requestConfig); // le dev configure la requête
     }
 
-    return FeaturesResponse::fromResponse($response);
+    return $this;
   }
-
-  public function categoryList(ListCategoryRequest $request): CategoriesListResponse
+  public function reverse(?callable $builder): self
   {
-    $response = $this->request('GET', $this->base_endpoint .
-      config('mapbox.search.category_list_endpoint'), [
-      'query' => [
-        ...($request->getOptions() ?? []),
-        ...$this->getAccessToken()
-      ]
-    ]);
-    if ($response->getStatusCode() !== 200) {
-      throw new \Exception('Mapbox API request failed');
+    $this->requestConfig = new ReverseRequest('GET', $this->base_endpoint . config('mapbox.search.reverse_endpoint'));
+    $this->responseClass = FeaturesResponse::class;
+    $this->requestAuthConfig = $this->getAccessToken();
+
+    if ($builder) {
+      $builder($this->requestConfig); // le dev configure la requête
     }
 
-    return CategoriesListResponse::fromResponse($response);
-  }
-
-  public function reverse(ReverseRequest $request): FeaturesResponse
-  {
-    $response = $this->request('GET', $this->base_endpoint .
-      config('mapbox.search.reverse_endpoint'), [
-      'query' => [
-        ...$request->getQuery(),
-        ...($request->getOptions() ?? []),
-        ...$this->getAccessToken()
-      ]
-    ]);
-    if ($response->getStatusCode() !== 200) {
-      throw new \Exception('Mapbox API request failed');
-    }
-
-    return FeaturesResponse::fromResponse($response);
+    return $this;
   }
 }

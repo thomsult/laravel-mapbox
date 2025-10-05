@@ -10,34 +10,80 @@ namespace Thomsult\LaravelMapbox\Requests\Options;
 
 class CategoryOptions
 {
-  public function __construct(
-    public ?string $language = null,
-    public ?int $limit = 25,
-    public ?string $proximity = null,
-    public ?string $bbox = null,
-    public ?string $country = null,
-    public ?string $types = null,
-    public ?string $poi_category_exclusions = null,
-    public ?string $sar_type = null,
-    public ?string $route = null,
-    public ?string $route_geometry = null,
-    public ?int $time_deviation = null
-  ) {}
 
-  public function toArray(): array
+  protected ?string $language = null;
+  protected ?int $limit = 25;
+  protected ?string $proximity = null;
+  protected ?string $bbox = null;
+  protected ?string $country = null;
+  protected ?string $types = null;
+  protected ?string $poi_category_exclusions = null;
+  protected ?string $sar_type = null;
+  protected ?string $route = null;
+  protected ?string $route_geometry = null;
+  protected ?int $time_deviation = null;
+
+
+  public function language(string $language): self
   {
-    return [
-      'language' => $this->language ?? null,
-      'limit' => $this->limit ?? null,
-      'proximity' => $this->proximity ?? null,
-      'bbox' => $this->bbox ?? null,
-      'country' => $this->country ?? null,
-      'types' => $this->types ?? null,
-      'poi_category_exclusions' => $this->poi_category_exclusions ?? null,
-      'sar_type' => $this->sar_type ?? null,
-      'route' => $this->route ?? null,
-      'route_geometry' => $this->route_geometry ?? null,
-      'time_deviation' => $this->time_deviation ?? null
-    ];
+    $this->language = $language;
+    return $this;
+  }
+  public function limit(int $limit): self
+  {
+    $this->limit = $limit;
+    return $this;
+  }
+  public function proximity(string $proximity): self
+  {
+    $this->proximity = $proximity;
+    return $this;
+  }
+  public function bbox(string $bbox): self
+  {
+    $this->bbox = $bbox;
+    return $this;
+  }
+
+  public function country(string $country): self
+  {
+    $this->country = $country;
+    return $this;
+  }
+
+  public function types(string $types): self
+  {
+    $this->types = $types;
+    return $this;
+  }
+
+  public function poiCategoryExclusions(string $poi_category_exclusions): self
+  {
+    $this->poi_category_exclusions = $poi_category_exclusions;
+    return $this;
+  }
+
+  public function sarType(string $sar_type): self
+  {
+    $this->sar_type = $sar_type;
+    return $this;
+  }
+
+  public function route(string $route): self
+  {
+    $this->route = $route;
+    return $this;
+  }
+
+  public function routeGeometry(string $route_geometry): self
+  {
+    $this->route_geometry = $route_geometry;
+    return $this;
+  }
+
+  public function timeDeviation(int $time_deviation): self
+  {
+    $this->time_deviation = $time_deviation;
+    return $this;
   }
 }

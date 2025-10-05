@@ -2,6 +2,7 @@
 
 namespace Thomsult\LaravelMapbox\Requests;
 
+use Thomsult\LaravelMapbox\Requests\AbstractRequest;
 use Thomsult\LaravelMapbox\Requests\Options\SearchOptions;
 
 /**
@@ -11,10 +12,10 @@ use Thomsult\LaravelMapbox\Requests\Options\SearchOptions;
  */
 class SearchRequest extends AbstractRequest
 {
-  public function __construct(
-    string $query,
-    ?SearchOptions $options
-  ) {
-    parent::__construct($query, $options ? $options->toArray() : null);
+
+  public function options(?callable $builder = null): self
+  {
+    $this->options = $builder ? $builder(new SearchOptions()) : null;
+    return $this;
   }
 }

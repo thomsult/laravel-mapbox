@@ -12,10 +12,9 @@ use Thomsult\LaravelMapbox\Requests\Options\SearchOptions;
  */
 class ForwardRequest extends AbstractRequest
 {
-  public function __construct(
-    string $query,
-    ?ForwardOptions $options = null
-  ) {
-    parent::__construct($query, $options ? $options->toArray() : null);
+  public function options(?callable $builder = null): self
+  {
+    $this->options = $builder ? $builder(new ForwardOptions()) : null;
+    return $this;
   }
 }

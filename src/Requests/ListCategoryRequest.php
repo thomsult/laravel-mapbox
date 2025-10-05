@@ -2,19 +2,13 @@
 
 namespace Thomsult\LaravelMapbox\Requests;
 
+use Thomsult\LaravelMapbox\Requests\Options\ListCategoryOptions;
+
 class ListCategoryRequest extends AbstractRequest
 {
-  private ?string $language;
-
-  public function __construct(?string $language = null)
+  public function options(?callable $builder = null): self
   {
-    $this->language = $language;
-  }
-
-  public function getOptions(): array
-  {
-    return [
-      'language' => $this->language ??  null
-    ];
+    $this->options = $builder ? $builder(new ListCategoryOptions()) : null;
+    return $this;
   }
 }

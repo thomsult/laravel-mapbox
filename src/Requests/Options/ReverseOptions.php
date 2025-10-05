@@ -3,29 +3,40 @@
 namespace Thomsult\LaravelMapbox\Requests\Options;
 
 use Thomsult\LaravelMapbox\Enums\PlaceType;
+use Thomsult\LaravelMapbox\Interfaces\MapboxOptionsInterface;
 
 /*
  * RetrieveOptions
  * Represents the options available for a reverse request.
  */
 
-class ReverseOptions
+class ReverseOptions extends AbstractOption implements MapboxOptionsInterface
 {
-  public function __construct(
-    public ?string $language = null,
-    public ?int $limit = null,
-    public ?string $country = null,
-    public ?string $types = null,
 
-  ) {}
+  protected ?string $language = null;
+  protected ?int $limit = null;
+  protected ?string $country = null;
+  protected ?string $types = null;
 
-  public function toArray(): array
+
+  public function language(string $language): self
   {
-    return [
-      'language' => $this->language ?? null,
-      'limit' => $this->limit ?? null,
-      'country' => $this->country ?? null,
-      'types' =>  $this->types ? PlaceType::fromValue($this->types)->value : null
-    ];
+    $this->language = $language;
+    return $this;
+  }
+  public function limit(int $limit): self
+  {
+    $this->limit = $limit;
+    return $this;
+  }
+  public function country(string $country): self
+  {
+    $this->country = $country;
+    return $this;
+  }
+  public function types(string $types): self
+  {
+    $this->types = $types;
+    return $this;
   }
 }

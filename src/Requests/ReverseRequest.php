@@ -10,33 +10,31 @@ use Thomsult\LaravelMapbox\Requests\Options\SearchOptions;
  * Represents a reverse geocoding request to the Mapbox API.
  * URL : https://docs.mapbox.com/api/search/search-box/#reverse-lookup
  */
-class ReverseRequest
+class ReverseRequest extends AbstractRequest
 {
-  public function __construct(
-    private float $longitude,
-    private float $latitude,
-    private ?ReverseOptions $options
-  ) {}
+  protected float $longitude;
+  protected float $latitude;
 
-  public function getLongitude(): array
+  public function options(?callable $builder = null): self
   {
-    return ['longitude' => $this->longitude];
+    $this->options = $builder ? $builder(new ReverseOptions()) : null;
+    return $this;
   }
-
-  public function getLatitude(): array
+  public function latitude(float $latitude): self
   {
-    return ['latitude' => $this->latitude];
+    $this->latitude = $latitude;
+    return $this;
   }
-
-  public function getOptions(): ?array
+  public function longitude(float $longitude): self
   {
-    return $this->options?->toArray();
+    $this->longitude = $longitude;
+    return $this;
   }
   public function getQuery(): array
   {
     return [
-      ...$this->getLongitude(),
-      ...$this->getLatitude(),
+      'longitude' => $this->longitude,
+      'latitude' => $this->latitude,
     ];
   }
 }

@@ -11,15 +11,24 @@ use Thomsult\LaravelMapbox\Requests\Options\CategoryOptions;
  */
 class CategoryRequest extends AbstractRequest
 {
-  public function __construct(
-    public string $id,
-    ?CategoryOptions  $options = null
-  ) {
-    parent::__construct(null, $options ? $options->toArray() : null);
-  }
+  protected string $id = '';
 
   public function getId(): ?string
   {
     return $this->id;
+  }
+  public function id(string $id): self
+  {
+    $this->id = $id;
+    return $this;
+  }
+  public function getUri(): string
+  {
+    return $this->uri . $this->id;
+  }
+  public function options(?callable $builder = null): self
+  {
+    $this->options = $builder ? $builder(new CategoryOptions()) : null;
+    return $this;
   }
 }

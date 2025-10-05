@@ -18,7 +18,6 @@ readonly class CategoriesListResponse
   {
     $data = json_decode($response->getBody()->getContents(), true);
 
-
     if (isset($data['error'])) {
       throw new \Exception($data['error']);
     }

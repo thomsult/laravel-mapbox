@@ -2,20 +2,46 @@
 
 namespace Thomsult\LaravelMapbox\Requests;
 
-class AbstractRequest
-{
-  public function __construct(
-    private ?string $query,
-    private ?array $options = null
-  ) {}
+use Thomsult\LaravelMapbox\Interfaces\MapboxOptionsInterface;
+use Thomsult\LaravelMapbox\Interfaces\MapboxRequestInterface;
 
-  public function getQuery(): ?string
+class AbstractRequest implements MapboxRequestInterface
+{
+  public string $query;
+  public ?MapboxOptionsInterface $options;
+  protected string $method;
+  protected string $uri;
+
+  public function __construct(string $method, string $uri)
   {
-    return $this->query;
+    $this->method = $method;
+    $this->uri = $uri;
+    $this->query = '';
   }
 
-  public function getOptions(): ?array
+  public function query(string $query): self
   {
-    return $this->options ?? null;
+    $this->query = $query;
+    return $this;
+  }
+  public function getQuery(): array
+  {
+    return ['q' => $this->query];
+  }
+
+  public function options(?callable $builder = null): self
+  {
+    if ($builder) {
+      $builder();
+    }
+    return $this;
+  }
+  public function getUri(): string
+  {
+    return $this->uri;
+  }
+  public function getMethod(): string
+  {
+    return $this->method;
   }
 }

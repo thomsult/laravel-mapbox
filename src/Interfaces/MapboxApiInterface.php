@@ -14,17 +14,43 @@ use Thomsult\LaravelMapbox\Response\SearchResponse;
 
 interface MapboxApiInterface
 {
+    /** @return array { access_token: string,session_token: string } */
     public function getAuthSessionToken(): array;
+    /**
+     * @param callable(SearchRequest): SearchRequest $builder
+     * @return self
+     */
+    public function autocomplete(callable $builder): self;
 
-    public function autocomplete(SearchRequest $request): SearchResponse;
+    /**
+     * @param callable(RetrieveRequest): RetrieveRequest $builder
+     * @return self
+     */
+    public function retrieve(callable $builder): self;
 
-    public function retrieve(RetrieveRequest $request): FeaturesResponse;
+    /**
+     * @param callable(ForwardRequest): ForwardRequest $builder
+     * @return self
+     */
+    public function forward(callable $builder): self;
 
-    public function forward(ForwardRequest $request): FeaturesResponse;
+    /**
+     * @param callable(CategoryRequest): CategoryRequest $builder
+     * @return self
+     */
+    public function category(callable $builder): self;
 
-    public function category(CategoryRequest $request): FeaturesResponse;
+    /**
+     * @param callable(ListCategoryRequest): ListCategoryRequest $builder
+     * @return self
+     */
+    public function categoryList(callable $builder): self;
 
-    public function categoryList(ListCategoryRequest $request): CategoriesListResponse;
+    /**
+     * @param callable(ReverseRequest): ReverseRequest $builder
+     * @return self
+     */
+    public function reverse(callable $builder): self;
 
-    public function reverse(ReverseRequest  $request): FeaturesResponse;
+    public function call(): CategoriesListResponse | FeaturesResponse | SearchResponse;
 }
