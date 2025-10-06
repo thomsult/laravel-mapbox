@@ -43,9 +43,9 @@ interface MapboxRequestInterface
    * suitable for sending multiple requests in a single API call.
    * Use the BatchRequestTrait to implement this method.
    *
-   * @return array|null
+   * @return @return array|null|Throwable
    */
-  public function toBatch(): ?array;
+  public function toBatch();
 
   public function getUri(): string;
 

@@ -7,6 +7,7 @@ use Thomsult\LaravelMapbox\Builder\UrlBuilder;
 use Thomsult\LaravelMapbox\Interfaces\MapboxOptionsInterface;
 use Thomsult\LaravelMapbox\Interfaces\MapboxRequestInterface;
 use Thomsult\LaravelMapbox\Requests\Options\EmptyOptions;
+use Throwable;
 
 class AbstractRequest implements MapboxRequestInterface
 {
@@ -65,7 +66,7 @@ class AbstractRequest implements MapboxRequestInterface
   {
     return $this->method;
   }
-  public function toBatch(): ?array
+  public function toBatch(): array|Throwable
   {
     throw new \Exception("Batch requests are not supported.");
   }

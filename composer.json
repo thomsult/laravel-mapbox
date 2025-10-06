@@ -2,7 +2,15 @@
     "name": "thomsult/laravel-mapbox",
     "description": "Laravel package pour les appels API Mapbox (geocoding, directions, etc.)",
     "type": "library",
-    "keywords": ["laravel", "mapbox", "geocoding", "api", "maps", "directions","search"],
+    "keywords": [
+        "laravel",
+        "mapbox",
+        "geocoding",
+        "api",
+        "maps",
+        "directions",
+        "search"
+    ],
     "license": "MIT",
     "authors": [
         {

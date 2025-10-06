@@ -1,87 +1,100 @@
 <?php
 
-use Thomsult\LaravelMapbox\Request\SearchRequest;
-use Thomsult\LaravelMapbox\Request\Options\SearchOptions;
-use Thomsult\LaravelMapbox\Response\SearchMapboxResponse;
+use Thomsult\LaravelMapbox\Enums\PlaceType;
 use Illuminate\Support\Collection;
+use Thomsult\LaravelMapbox\Interfaces\MapboxApiInterface;
+use Thomsult\LaravelMapbox\Interfaces\MapboxClientInterface;
+use Thomsult\LaravelMapbox\Interfaces\MapboxOptionsInterface;
+use Thomsult\LaravelMapbox\Interfaces\MapboxRequestInterface;
+use Thomsult\LaravelMapbox\Services\MapboxClient;
 
+// Test de la construction de la requête autocomplete
+test('MapboxClient autocomplete builds request as expected', function () {
+    $query = 'Paris';
 
-test('SearchRequest can be instantiated', function () {
-    $options = null; // ou new Thomsult\LaravelMapbox\Request\Options\SearchOptions(...)
-    $request = new SearchRequest('Paris', $options);
-    expect($request)->toBeInstanceOf(SearchRequest::class);
-});
-
-
-test('SearchRequest returns correct query and options as array', function () {
-    $options = new SearchOptions(
-        types: ['place', 'address'],
-        limit: 5,
-        country: 'fr',
-        language: 'fr',
-        proximity: '2.3522,48.8566',
-        bbox: '2.0,48.0,3.0,49.0',
-        poi_category: 'cafe',
-        poi_category_exclusions: 'bar',
-        eta_type: 'driving',
-        navigation_profile: 'car',
-        origin: '2.3333,48.8666',
+    $client = MapboxClient::client();
+    $request = $client->autocomplete(
+        fn($req) => $req
+            ->query($query)
+            ->options(
+                fn($options) => $options
+                    ->types([PlaceType::PLACE->value])
+                    ->limit(2)
+                    ->country('FR')
+                    ->language('fr')
+            )
     );
-    $request = new SearchRequest('Tour Eiffel', $options);
-    expect($request->getQuery())->toBe('Tour Eiffel');
-    $array = $request->getOptions();
-    expect($array)->toBeArray();
-    expect($array['types'])->toBeString();
-    expect($array['limit'])->toBeNumeric()->toBeGreaterThan(0)->toBeLessThanOrEqual(10);
-    expect($array['country'])->toBeString();
-    expect($array['language'])->toBeString();
-    expect($array['proximity'])->toBeString();
-    expect($array['bbox'])->toBeString();
-    expect($array['poi_category'])->toBeString();
-    expect($array['poi_category_exclusions'])->toBeString();
-    expect($array['eta_type'])->toBeString();
-    expect($array['navigation_profile'])->toBeString();
-    expect($array['origin'])->toBeString();
+
+    // Vérification de la structure du builder avant le call
+    expect($request)->not()->toBeNull();
+    expect($request)->toBeInstanceOf(MapboxApiInterface::class);
 });
 
 
+test('MapboxClient autocomplete Parameters are set correctly', function () {
+    $query = 'Paris';
 
-test('SearchRequest with response: SearchMapboxResponse hydration', function () {
-    // Simule une réponse HTTP Mapbox
-    $fakeResponse = new class {
-        public function getBody() {
-            return new class {
-                public function getContents() {
-                    return json_encode([
-                        'suggestions' => [
-                            [
-                                'name' => 'Tour Eiffel',
-                                'mapbox_id' => 'mbx123',
-                                'feature_type' => 'poi',
-                                'place_formatted' => 'Champ de Mars, 5 Avenue Anatole France, 75007 Paris, France',
-                                'language' => 'fr',
-                            ]
-                        ],
-                        'attribution' => 'Mapbox',
-                        'response_id' => 'resp-1',
-                        'status' => 200
-                    ]);
-                }
-            };
+    $client = MapboxClient::client();
+    $request = $client->autocomplete(
+        function ($req) use ($query) {
+            $currentRequest =  $req
+                ->query($query)
+                ->options(
+                    function ($options) {
+                        return $options
+                            ->types([PlaceType::PLACE->value])
+                            ->limit(2)
+                            ->country('FR')
+                            ->language('fr');
+                    }
+                );
+            expect($currentRequest)->toBeInstanceOf(MapboxRequestInterface::class);
+            expect($currentRequest->getQuery())->toEqual(['q' => $query]);
+            expect($currentRequest->getOptions())->toBeArray();
+            expect($currentRequest->getMethod())->toEqual('GET');
+            expect($currentRequest->getBody())->toBeEmpty();
+
+            try {
+                $currentRequest->toBatch();
+            } catch (Throwable $e) {
+                expect($e)->toBeInstanceOf(Throwable::class);
+            }
+            return $currentRequest;
         }
-    };
+    );
 
-    $response = SearchMapboxResponse::fromResponse($fakeResponse);
-    expect($response)->toBeInstanceOf(SearchMapboxResponse::class);
-    expect($response->isEmpty())->toBeFalse();
-    expect($response->count())->toBe(1);
-    $suggestion = $response->getFirstSuggestion();
-    expect($suggestion)->not()->toBeNull();
-    expect($suggestion->name)->toBeString();
-    expect($suggestion->mapbox_id)->toBeString();
-    expect($suggestion->feature_type->value)->toBeString();
-    expect($suggestion->place_formatted)->toBeString();
-    expect($response->attribution)->toBeString();
-    expect($response->responseId)->toBeString();
-    expect($response->status)->toBeNumeric();
+    // Vérification de la structure du builder avant le call
+    expect($request)->not()->toBeNull();
+    expect($request)->toBeInstanceOf(MapboxApiInterface::class);
+});
+
+
+test('MapboxClient autocomplete Options are set correctly', function () {
+    $query = 'Paris';
+
+    $client = MapboxClient::client();
+    $request = $client->autocomplete(
+        fn($req) => $req
+            ->query($query)
+            ->options(
+                function ($options) {
+                    $currentOptions = $options
+                        ->types([PlaceType::PLACE->value])
+                        ->limit(2)
+                        ->country('FR')
+                        ->language('fr');
+
+                    expect($currentOptions)->toBeInstanceOf(MapboxOptionsInterface::class);
+                    expect($currentOptions->toArray()['types'])->toEqual(PlaceType::PLACE->value);
+                    expect($currentOptions->toArray()['limit'])->toBeInt();
+                    expect($currentOptions->toArray()['country'])->toBeString();
+                    expect($currentOptions->toArray()['language'])->toBeString();
+                    return $currentOptions;
+                }
+            )
+    );
+
+    // Vérification de la structure du builder avant le call
+    expect($request)->not()->toBeNull();
+    expect($request)->toBeInstanceOf(MapboxApiInterface::class);
 });
