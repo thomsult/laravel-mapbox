@@ -14,11 +14,11 @@ jobs:
     # 1️⃣ Récupère le code source du package
     - uses: actions/checkout@v4
 
-    # 2️⃣ Installe PHP 8.3 et les extensions nécessaires
+    # 2️⃣ Installe PHP 8.2 (minimum requis pour Laravel 12) et les extensions nécessaires
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.3'
+        php-version: '8.2'
         extensions: mbstring, intl, bcmath
 
     # 3️⃣ Met en cache les dépendances Composer
@@ -33,16 +33,16 @@ jobs:
     - name: Install Package Dependencies
       run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
-    # 5️⃣ Crée un projet Laravel temporaire pour tester le package
-    - name: Create Temporary Laravel Project
-      run: composer create-project laravel/laravel temp-laravel "^10.0" --quiet
+    # 5️⃣ Crée un projet Laravel 12 pour tester le package
+    - name: Create Temporary Laravel 12 Project
+      run: composer create-project laravel/laravel temp-laravel "^12.0" --quiet
 
     # 6️⃣ Configure le package local comme dépôt de type path et l'installe
     - name: Configure Package in Temporary Project
       run: |
         cd temp-laravel
         composer config repositories.laravel-mapbox path ../
-        composer require thomsult/laravel-mapbox:* --prefer-source --no-interaction
+        composer require thomsult/laravel-mapbox:dev-main --prefer-source --no-interaction
 
     # 7️⃣ Copie le fichier .env et génère la clé d’application Laravel
     - name: Setup Environment
