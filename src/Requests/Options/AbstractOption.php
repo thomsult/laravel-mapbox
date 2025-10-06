@@ -6,6 +6,7 @@ use ArrayIterator;
 use Illuminate\JsonSchema\Types\Type;
 use Illuminate\Support\Facades\Validator;
 use Thomsult\LaravelMapbox\Requests\Options\Rules\CountryRules;
+use Thomsult\LaravelMapbox\Requests\Options\Rules\NavigationProfileRules;
 use Thomsult\LaravelMapbox\Requests\Options\Rules\TypeRules;
 
 abstract class AbstractOption
@@ -14,7 +15,7 @@ abstract class AbstractOption
 
     protected array $globalsRules = [
         'types' => TypeRules::class,
-        'country' => CountryRules::class
+        'country' => CountryRules::class,
         'navigation_profile' => NavigationProfileRules::class
     ];
 

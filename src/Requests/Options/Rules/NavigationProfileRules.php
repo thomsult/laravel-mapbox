@@ -2,7 +2,7 @@
 
 namespace Thomsult\LaravelMapbox\Requests\Options\Rules;
 
-class CountryRules
+class NavigationProfileRules
 {
   public static function rules(): array
   {
