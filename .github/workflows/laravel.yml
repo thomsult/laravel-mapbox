@@ -54,6 +54,6 @@ jobs:
     # 8️⃣ Installe Pest si nécessaire et exécute les tests
     - name: Run Pest Tests
       run: |
-        cd temp-laravel
-        composer require pestphp/pest --dev --no-interaction
-        ../vendor/bin/pest ../tests
+        cd temp-laravel/vendor/thomsult/laravel-mapbox
+        composer test
+        
