@@ -3,8 +3,9 @@
 namespace Thomsult\LaravelMapbox\Response;
 
 use Illuminate\Support\Collection;
+use Thomsult\LaravelMapbox\Interfaces\MapboxResponseInterface;
 
-readonly class BatchFeaturesResponse
+readonly class BatchFeaturesResponse implements MapboxResponseInterface
 {
   /** @param Collection<int, FeaturesResponse> $batch */
   public function __construct(
@@ -34,7 +35,7 @@ readonly class BatchFeaturesResponse
   public function toArray(): array
   {
     return [
-      'batch' => $this->batch->toArray(),
+      'batch' => $this->getBatch(),
       'status' => $this->status
     ];
   }
@@ -42,5 +43,4 @@ readonly class BatchFeaturesResponse
   {
     return $this->batch;
   }
-  
 }

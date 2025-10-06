@@ -3,9 +3,10 @@
 namespace Thomsult\LaravelMapbox\Response;
 
 use Illuminate\Support\Collection;
+use Thomsult\LaravelMapbox\Interfaces\MapboxResponseInterface;
 use Thomsult\LaravelMapbox\Response\Suggestions\Suggestion;
 
-readonly class SearchResponse
+readonly class SearchResponse implements MapboxResponseInterface
 {
     /** @param Collection<int, Suggestion> $suggestions */
     public function __construct(
@@ -15,7 +16,7 @@ readonly class SearchResponse
         public int $status
     ) {}
 
-    public static function fromResponse( $response): self
+    public static function fromResponse($response): self
     {
         $data = json_decode($response->getBody()->getContents(), true);
         if (isset($data['error'])) {

@@ -12,13 +12,14 @@ use Thomsult\LaravelMapbox\Response\BatchFeaturesResponse;
 use Thomsult\LaravelMapbox\Response\CategoriesListResponse;
 use Thomsult\LaravelMapbox\Response\FeaturesResponse;
 use Thomsult\LaravelMapbox\Response\SearchResponse;
+use Throwable;
 
 interface MapboxApiInterface
 {
     /** @return array { access_token: string,session_token: string } */
     public function getAuthSessionToken(): array;
 
-    public function call(): CategoriesListResponse | FeaturesResponse | SearchResponse | BatchFeaturesResponse;
+    public function call(): MapboxResponseInterface|Throwable;
 
     /// SearchBoxApiInterface
 

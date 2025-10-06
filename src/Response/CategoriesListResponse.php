@@ -3,9 +3,10 @@
 namespace Thomsult\LaravelMapbox\Response;
 
 use Illuminate\Support\Collection;
+use Thomsult\LaravelMapbox\Interfaces\MapboxResponseInterface;
 use Thomsult\LaravelMapbox\Response\Common\CategoryItems;
 
-readonly class CategoriesListResponse
+readonly class CategoriesListResponse implements MapboxResponseInterface
 {
   public function __construct(
     public Collection $list_items,

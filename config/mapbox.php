@@ -3,6 +3,17 @@
 return [
     'access_token' => env('MAPBOX_ACCESS_TOKEN'),
     'base_uri' => 'https://api.mapbox.com/',
+    'debug' => env('MAPBOX_DEBUG', false),
+    'cache' => [
+        'enabled' => env('MAPBOX_CACHE_ENABLED', true),
+        'duration' => env('MAPBOX_CACHE_DURATION', 15),
+        'timeout' => env('MAPBOX_CACHE_TIMEOUT', 5)
+    ],
+    'rate' => [
+        'enabled' => env('MAPBOX_RATE_ENABLED', true),
+        'limit' => env('MAPBOX_RATE_LIMIT', 60),
+        'decay' => env('MAPBOX_RATE_DECAY', 60),
+    ],
     'search' => [
         'api_version' => 'v1/',
         'prefix' => 'search/',

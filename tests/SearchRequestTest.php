@@ -98,3 +98,4 @@ test('MapboxClient autocomplete Options are set correctly', function () {
     expect($request)->not()->toBeNull();
     expect($request)->toBeInstanceOf(MapboxApiInterface::class);
 });
+

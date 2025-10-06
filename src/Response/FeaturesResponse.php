@@ -3,9 +3,10 @@
 namespace Thomsult\LaravelMapbox\Response;
 
 use Illuminate\Support\Collection;
+use Thomsult\LaravelMapbox\Interfaces\MapboxResponseInterface;
 use Thomsult\LaravelMapbox\Response\Features\Feature;
 
-readonly class FeaturesResponse
+readonly class FeaturesResponse implements MapboxResponseInterface
 {
   /** @param Collection<int, FeatureSet> $features */
   public function __construct(
