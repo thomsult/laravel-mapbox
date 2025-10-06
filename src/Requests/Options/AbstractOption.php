@@ -41,7 +41,7 @@ abstract class AbstractOption
 
         return $options;
     }
-    public function language(string $language): self
+    public function language(string $language): static
     {
         $this->validate($language, 'language', ['required', 'string', 'max:2']);
 

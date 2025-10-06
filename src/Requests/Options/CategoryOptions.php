@@ -2,13 +2,15 @@
 
 namespace Thomsult\LaravelMapbox\Requests\Options;
 
+use Thomsult\LaravelMapbox\Interfaces\MapboxOptionsInterface;
+
 /*
  * CategoryOptions
  * Represents the options available for a category request.
  */
 
 
-class CategoryOptions extends AbstractOption
+class CategoryOptions extends AbstractOption implements MapboxOptionsInterface
 {
 
   protected ?int $limit = 25;

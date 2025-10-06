@@ -35,7 +35,7 @@ class AbstractRequest implements MapboxRequestInterface
     $this->body = new BodyBuilder();
   }
 
-  public function query(string $query): self
+  public function query(string $query): static
   {
 
     $validator = Validator::make(['query' => $query], [
@@ -55,7 +55,7 @@ class AbstractRequest implements MapboxRequestInterface
   }
 
 
-  public function body(?callable $builder = null): self
+  public function body(?callable $builder = null): static
   {
     $this->body = $builder ? $builder(new BodyBuilder()) : null;
     return $this;
@@ -65,7 +65,7 @@ class AbstractRequest implements MapboxRequestInterface
     return $this->body ? $this->body->getBody() : [];
   }
 
-  public function options(?callable $builder = null): self
+  public function options(?callable $builder = null): static
   {
     if ($builder) {
       $builder();
