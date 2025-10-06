@@ -1,4 +1,4 @@
-name: Laravel
+name: Laravel Package CI
 
 on:
   push:
@@ -11,42 +11,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1️⃣ Récupère le code source
     - uses: actions/checkout@v4
 
-    # 2️⃣ Installe PHP 8.3 et les extensions nécessaires
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
         php-version: '8.3'
         extensions: mbstring, intl, bcmath
-        coverage: none
 
-    # 3️⃣ Copie le fichier .env si absent
-    - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-
-    # 4️⃣ Met en cache les dépendances Composer pour accélérer les builds
-    - name: Cache Composer dependencies
-      uses: actions/cache@v4
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: ${{ runner.os }}-php-
-
-    # 5️⃣ Installe les dépendances PHP
-    - name: Install Dependencies
+    # Installe Composer pour ton package
+    - name: Install Package Dependencies
       run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
-    - name: Debug workspace
-      run: |
-        pwd
-        ls -la
-  
-    # 6️⃣ Génère la clé d’application Laravel
-    - name: Generate Application Key
-      run: php artisan key:generate
+    # Crée un projet Laravel temporaire
+    - name: Create Temporary Laravel Project
+      run: composer create-project laravel/laravel temp-laravel "^10.0" --quiet
 
-    # 7️⃣ Exécute les tests (avec Pest ou PHPUnit)
+    # Installe ton package dans le projet temporaire
+    - name: Install Package in Temporary Project
+      run: |
+        cd temp-laravel
+        composer require ../
+
+    # Génère la clé d'application dans le projet temporaire
+    - name: Generate Application Key
+      run: |
+        cd temp-laravel
+        php artisan key:generate
+
+    # Exécute les tests du package
     - name: Run Tests
-      run: composer test
+      run: |
+        cd temp-laravel/vendor/thomsult/laravel-mapbox
+        composer test
