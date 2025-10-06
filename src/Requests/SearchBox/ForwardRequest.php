@@ -1,6 +1,8 @@
 <?php
 
-namespace Thomsult\LaravelMapbox\Requests;
+namespace Thomsult\LaravelMapbox\Requests\SearchBox;
+
+use Thomsult\LaravelMapbox\Requests\AbstractRequest;
 
 use Thomsult\LaravelMapbox\Requests\Options\ForwardOptions;
 use Thomsult\LaravelMapbox\Requests\Options\SearchOptions;

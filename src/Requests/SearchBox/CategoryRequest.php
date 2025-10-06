@@ -1,15 +1,16 @@
 <?php
 
-namespace Thomsult\LaravelMapbox\Requests;
+namespace Thomsult\LaravelMapbox\Requests\SearchBox;
 
-use Thomsult\LaravelMapbox\Requests\Options\RetrieveOptions;
+use Thomsult\LaravelMapbox\Requests\AbstractRequest;
+use Thomsult\LaravelMapbox\Requests\Options\CategoryOptions;
 
 /**
  * SearchRequest
  * Represents a search request to the Mapbox API.
  * URL : https://docs.mapbox.com/api/search/search-box/#retrieve-a-suggested-feature
  */
-class RetrieveRequest extends AbstractRequest
+class CategoryRequest extends AbstractRequest
 {
   protected string $id = '';
 
@@ -28,7 +29,7 @@ class RetrieveRequest extends AbstractRequest
   }
   public function options(?callable $builder = null): self
   {
-    $this->options = $builder ? $builder(new RetrieveOptions()) : null;
+    $this->options = $builder ? $builder(new CategoryOptions()) : null;
     return $this;
   }
 }

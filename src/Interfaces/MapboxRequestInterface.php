@@ -11,8 +11,43 @@ interface MapboxRequestInterface
   public function query(string $query): self;
 
   /**
+   * @return array
+   */
+  public function getQuery(): array;
+
+  /**
    * @param callable|null $builder
    * @return self
    */
   public function options(?callable $builder = null): self;
+
+  /**
+   * @return array
+   */
+  public function getOptions(): array;
+
+  /**
+   * @param callable|array $builder
+   * @return self
+   */
+  public function body(?callable $builder = null): self;
+
+  /**
+   * @return array
+   */
+  public function getBody(): array;
+
+  /**
+   * Convert the request to a batch format.
+   * This method is used to convert individual requests into a batch format
+   * suitable for sending multiple requests in a single API call.
+   * Use the BatchRequestTrait to implement this method.
+   *
+   * @return array|null
+   */
+  public function toBatch(): ?array;
+
+  public function getUri(): string;
+
+  public function getMethod(): string;
 }

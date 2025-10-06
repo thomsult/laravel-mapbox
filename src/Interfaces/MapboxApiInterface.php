@@ -8,6 +8,7 @@ use Thomsult\LaravelMapbox\Requests\ListCategoryRequest;
 use Thomsult\LaravelMapbox\Requests\RetrieveRequest;
 use Thomsult\LaravelMapbox\Requests\ReverseRequest;
 use Thomsult\LaravelMapbox\Requests\SearchRequest;
+use Thomsult\LaravelMapbox\Response\BatchFeaturesResponse;
 use Thomsult\LaravelMapbox\Response\CategoriesListResponse;
 use Thomsult\LaravelMapbox\Response\FeaturesResponse;
 use Thomsult\LaravelMapbox\Response\SearchResponse;
@@ -16,6 +17,11 @@ interface MapboxApiInterface
 {
     /** @return array { access_token: string,session_token: string } */
     public function getAuthSessionToken(): array;
+
+    public function call(): CategoriesListResponse | FeaturesResponse | SearchResponse | BatchFeaturesResponse;
+
+    /// SearchBoxApiInterface
+
     /**
      * @param callable(SearchRequest): SearchRequest $builder
      * @return self
@@ -52,5 +58,29 @@ interface MapboxApiInterface
      */
     public function reverse(callable $builder): self;
 
-    public function call(): CategoriesListResponse | FeaturesResponse | SearchResponse;
+    /// GeocodingApiInterface
+
+    /**
+     * @param callable(ForwardTextRequest): ForwardTextRequest $builder
+     * @return self
+     */
+    public function forwardText(callable $builder): self;
+
+    /**
+     * @param callable(ForwardStructuredRequest): ForwardStructuredRequest $builder
+     * @return self
+     */
+    public function forwardStructured(callable $builder): self;
+
+    /**
+     * @param callable(ReverseRequest): ReverseRequest $builder
+     * @return self
+     */
+    public function reverseGeocode(callable $builder): self;
+
+    /**
+     * @param callable(BatchRequest): BatchRequest $builder
+     * @return self
+     */
+    public function batch(callable $builder): self;
 }

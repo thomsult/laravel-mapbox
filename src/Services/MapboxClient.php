@@ -4,6 +4,7 @@ namespace Thomsult\LaravelMapbox\Services;
 
 use Thomsult\LaravelMapbox\Exceptions\MapboxException;
 use Illuminate\Support\Str;
+use Thomsult\LaravelMapbox\Builder\UrlBuilder;
 use Thomsult\LaravelMapbox\Interfaces\MapboxClientInterface;
 use Thomsult\LaravelMapbox\Interfaces\MapboxApiInterface;
 
@@ -18,10 +19,7 @@ class MapboxClient implements MapboxClientInterface
     return new MapboxApi(
       (string) Str::uuid(),
       config('mapbox.access_token'),
-      config('mapbox.search.base_endpoint') . config('mapbox.api_version'),
-      [
-        'base_uri' => 'https://api.mapbox.com/',
-      ]
+      new UrlBuilder()
     );
   }
 }

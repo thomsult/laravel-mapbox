@@ -49,6 +49,17 @@ readonly class FeaturesResponse
   {
     return $this->features->count();
   }
+  public static function fromArray(array $data): self
+  {
+    $features = collect($data['features'] ?? [])
+      ->map(fn(array $feature) => Feature::fromArray($feature));
+    return new self(
+      features: $features,
+      attribution: $data['attribution'] ?? '',
+      type: $data['type'] ?? '',
+      status: $data['status'] ?? 200
+    );
+  }
 
   public function toArray(): array
   {
