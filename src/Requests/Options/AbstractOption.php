@@ -27,7 +27,7 @@ abstract class AbstractOption
         $options = [];
 
         foreach ($vars as $key => $value) {
-            if ($value === null) {
+            if ($value === null || $key === 'globalsRules') {
                 continue; // on ignore les champs vides
             }
 
