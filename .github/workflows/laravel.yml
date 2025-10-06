@@ -11,36 +11,49 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # 1️⃣ Récupère le code source du package
     - uses: actions/checkout@v4
 
+    # 2️⃣ Installe PHP 8.3 et les extensions nécessaires
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
         php-version: '8.3'
         extensions: mbstring, intl, bcmath
 
-    # Installe Composer pour ton package
+    # 3️⃣ Met en cache les dépendances Composer
+    - name: Cache Composer dependencies
+      uses: actions/cache@v4
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-php-
+
+    # 4️⃣ Installe les dépendances du package
     - name: Install Package Dependencies
       run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
-    # Crée un projet Laravel temporaire
+    # 5️⃣ Crée un projet Laravel temporaire pour tester le package
     - name: Create Temporary Laravel Project
       run: composer create-project laravel/laravel temp-laravel "^10.0" --quiet
 
-    # Installe ton package dans le projet temporaire
-    - name: Install Package in Temporary Project
+    # 6️⃣ Configure le package local comme dépôt de type path et l'installe
+    - name: Configure Package in Temporary Project
       run: |
         cd temp-laravel
-        composer require ../
+        composer config repositories.laravel-mapbox path ../
+        composer require thomsult/laravel-mapbox:* --prefer-source --no-interaction
 
-    # Génère la clé d'application dans le projet temporaire
-    - name: Generate Application Key
+    # 7️⃣ Copie le fichier .env et génère la clé d’application Laravel
+    - name: Setup Environment
       run: |
         cd temp-laravel
+        php -r "file_exists('.env') || copy('.env.example', '.env');"
         php artisan key:generate
 
-    # Exécute les tests du package
-    - name: Run Tests
+    # 8️⃣ Installe Pest si nécessaire et exécute les tests
+    - name: Run Pest Tests
       run: |
-        cd temp-laravel/vendor/thomsult/laravel-mapbox
-        composer test
+        cd temp-laravel
+        composer require pestphp/pest --dev --no-interaction
+        ../vendor/bin/pest ../tests
