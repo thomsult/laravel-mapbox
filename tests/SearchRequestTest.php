@@ -2,11 +2,13 @@
 
 use Thomsult\LaravelMapbox\Enums\PlaceType;
 use Illuminate\Support\Collection;
+use Tests\TestCase;
 use Thomsult\LaravelMapbox\Interfaces\MapboxApiInterface;
 use Thomsult\LaravelMapbox\Interfaces\MapboxClientInterface;
 use Thomsult\LaravelMapbox\Interfaces\MapboxOptionsInterface;
 use Thomsult\LaravelMapbox\Interfaces\MapboxRequestInterface;
 use Thomsult\LaravelMapbox\Services\MapboxClient;
+
 
 // Test de la construction de la requête autocomplete
 test('MapboxClient autocomplete builds request as expected', function () {
@@ -98,4 +100,3 @@ test('MapboxClient autocomplete Options are set correctly', function () {
     expect($request)->not()->toBeNull();
     expect($request)->toBeInstanceOf(MapboxApiInterface::class);
 });
-

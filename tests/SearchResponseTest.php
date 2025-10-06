@@ -2,6 +2,7 @@
 
 use Thomsult\LaravelMapbox\Enums\PlaceType;
 use Illuminate\Support\Collection;
+use Tests\TestCase;
 use Thomsult\LaravelMapbox\Interfaces\MapboxApiInterface;
 use Thomsult\LaravelMapbox\Interfaces\MapboxClientInterface;
 use Thomsult\LaravelMapbox\Interfaces\MapboxOptionsInterface;
@@ -32,7 +33,6 @@ test('MapboxClient autocomplete response are set correctly', function () {
     expect($request)->toBeInstanceOf(MapboxApiInterface::class);
 
     $response = $request->call();
-
     expect($response)->not()->toBeNull();
     expect($response)->toBeInstanceOf(MapboxResponseInterface::class);
 });
