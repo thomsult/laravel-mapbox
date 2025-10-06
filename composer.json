@@ -59,6 +59,10 @@
         }
     },
     "scripts": {
-        "test": "pest --verbose"
+        "test": [
+            "composer install",
+            "./vendor/bin/pest",
+            "rm -R ./vendor"
+        ]
     }
 }
