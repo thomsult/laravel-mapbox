@@ -60,9 +60,7 @@
     },
     "scripts": {
         "test": [
-            "composer install",
-            "./vendor/bin/pest",
-            "rm -R ./vendor"
+            "./vendor/bin/pest"
         ]
     }
 }
