@@ -11,9 +11,8 @@ Un package Laravel élégant et typé pour intégrer les APIs Mapbox (geocoding,
 - 🎯 **API typée** - Auto-complétion complète et type safety
 - 🚀 **Fluent API** - Interface intuitive
 - 🔧 **Configuration simple** - Prêt à l'emploi en quelques minutes
-- 📍 **Support complet** - Search, Suggestions, Catégories
-- 🌍 **Multi-langues** - Support des langues et pays
-- ⚡ **Laravel intégré** - Service Provider, Facade, Configuration
+- 📍 **Support complet** - Search Box API, Geocoding API
+- ⚡ **Laravel intégré** - Service Provider, Facade, Configuration, Cache, Rate Limiting, Lock
 - 🧪 **Testé** - Tests unitaires et d'intégration
 
 ## 📋 Prérequis
@@ -50,9 +49,21 @@ Le fichier de configuration `config/mapbox.php` permet de personnaliser :
 return [
     'access_token' => env('MAPBOX_ACCESS_TOKEN'),
     'base_uri' => 'https://api.mapbox.com/',
-    'api_version' => 'v1/',
+    'debug' => env('MAPBOX_DEBUG', false),
+    'cache' => [
+        'enabled' => env('MAPBOX_CACHE_ENABLED', true),
+        'duration' => env('MAPBOX_CACHE_DURATION', 15),
+        'timeout' => env('MAPBOX_CACHE_TIMEOUT', 5)
+    ],
+    'rate' => [
+        'enabled' => env('MAPBOX_RATE_ENABLED', true),
+        'limit' => env('MAPBOX_RATE_LIMIT', 60),
+        'decay' => env('MAPBOX_RATE_DECAY', 60),
+    ],
     'search' => [
-        'base_endpoint' => 'search/searchbox/',
+        'api_version' => 'v1/',
+        'prefix' => 'search/',
+        'base_endpoint' => 'searchbox/',
         'forward_endpoint' => 'forward',
         'suggest_endpoint' => 'suggest',
         'retrieve_endpoint' => 'retrieve',
@@ -60,6 +71,14 @@ return [
         'category_list_endpoint' => 'list/category',
         'reverse_endpoint' => 'reverse',
     ],
+    'geocoding' => [
+        'api_version' => 'v6/',
+        'prefix' => 'search/',
+        'base_endpoint' => 'geocode/',
+        'forward_endpoint' => 'forward',
+        'reverse_endpoint' => 'reverse',
+        'batch_endpoint' => 'batch'
+    ]
 ];
 ```
 
@@ -68,56 +87,74 @@ return [
 ### Recherche de base
 
 ```php
-use Thomsult\LaravelMapbox\Facades\Mapbox;
-use Thomsult\LaravelMapbox\Requests\SuggestRequest;
-use Thomsult\LaravelMapbox\Request\SearchRequest;
+Artisan::command('mapbox:search {query}', function ($query) {
+    $this->comment('Mapbox search command');
 
-$response = Mapbox::client()->autocomplete(
-    new SearchRequest('Paris')
-);
-
-foreach ($response->getSuggestions() as $suggestion) {
-    echo $suggestion->getFullName(); // "Paris, France"
-}
+    $response = MapboxClient::client()
+        ->autocomplete(fn($req) => $req
+            ->query($query)
+            ->options(fn($options) => $options
+                ->types([PlaceType::PLACE->value])
+                ->limit(2)
+                ->country('FR')
+                ->language('fr')))
+        ->call();
+});
+dd($response); // Affiche la réponse de l'API
 ```
 
-### Recherche avancée avec options typées
+### Recherche inversée
 
 ```php
-use Thomsult\LaravelMapbox\Request\Options\SearchOptions;
-use Thomsult\LaravelMapbox\Enums\PlaceType;
-use Thomsult\LaravelMapbox\Request\SearchRequest;
-
-$options = new SearchOptions(
-           types: [PlaceType::PLACE->value],
-           limit: 2,
-           country: 'FR',
-           language: 'fr',
-);
-
-$response = Mapbox::client()->autocomplete(
-    new SearchRequest('Par', $options)
-);
+Artisan::command('mapbox:search:reverse {longitude} {latitude}', function (string $longitude, string $latitude) {
+    $this->comment('Mapbox search command');
+    $response = MapboxClient::client()->reverse(
+        fn($req) => $req
+            ->longitude($longitude)
+            ->latitude($latitude)
+            ->options(
+                fn($options) => $options
+                    ->language('fr')
+            )
+    )
+        ->call();
+    dd($response);
+});
 ```
 
-### Utilisation des réponses
+### Recherche Groupée
 
 ```php
-$response = Mapbox::client()->autocomplete(new SearchRequest('Paris'));
-
-// Accès aux données
-echo "Trouvé : " . $response->count() . " résultats";
-
-// Première suggestion
-$first = $response->getFirstSuggestion();
-if ($first) {
-    echo $first->name;              // "Paris"
-    echo $first->mapbox_id;         // "place.123456"
-
-// Vérifications
-if ($response->isEmpty()) {
-    echo "Aucun résultat trouvé";
-}
+Artisan::command('mapbox:geocoding:batch', function () {
+    $this->comment('Mapbox search command');
+    $response = MapboxClient::client()->batch(
+        fn($req) => $req
+            ->body(
+                fn($body) => $body
+                    ->add(
+                        (new ForwardTextRequest())
+                            ->query("1600 Pennsylvania Avenue NW, Washington, DC 20500, United States")
+                            ->options(
+                                fn($options) => $options
+                                    ->types("address")
+                                    ->bbox("-80, 35, -70, 40")
+                                    ->limit(1)
+                            )
+                    )
+                    ->add(
+                        (new ForwardTextRequest())
+                            ->query("1605 Pennsylvania Avenue NW, Washington, DC 20500, United States")
+                            ->options(
+                                fn($options) => $options
+                                    ->types("address")
+                                    ->bbox("-80, 35, -70, 40")
+                                    ->limit(1)
+                            )
+                    )
+            )
+    )
+        ->call();
+});
 ```
 
 ### Types de lieux disponibles
@@ -139,78 +176,21 @@ use Thomsult\LaravelMapbox\Enums\PlaceType;
     case CATEGORY = 'category';
     case UNKNOWN = 'unknown';
 ```
-
-### Options de recherche
-
-#### Limiter par type
-```php
-$options = new SearchOptions(
-  types: [PlaceType::PLACE->value, PlaceType::LOCALITY->value]
-)
-    
-```
-
-#### Limiter par pays
-```php
-$options = new SearchOptions(
-  country: 'FR'
-)
-```
-
-#### Définir une langue
-```php
-$options = new SearchOptions(
-  language: 'fr'
-)
-```
-
-#### Limiter la zone de recherche (bbox)
-```php
-$options = new SearchOptions(
-    bbox: [
-        'minLng' => 2.0,   // Longitude minimum
-        'minLat' => 48.5,  // Latitude minimum
-        'maxLng' => 2.5,   // Longitude maximum
-        'maxLat' => 49.0   // Latitude maximum
-    ]
-);
-```
-
-#### Recherche de proximité
-```php
-$options = new SearchOptions(
-    proximity: [
-        'longitude' => 2.3522,  // Longitude du centre de Paris
-        'latitude' => 48.8566   // Latitude du centre de Paris
-    ]
-);  
-```
-
-#### Autres options
-```php
-$options = new SearchOptions(
-    limit: 5,
-    autocomplete: true
-);
-```
-
 ### Utilisation dans des commandes Artisan
 
 ```php
-Artisan::command('mapbox:test', function () {
-    $response = Mapbox::client()->autocomplete(
-        new SuggestRequest('Paris', 
-            new SearchOptions(
-                limit: 3
-            )
-        )
-    );
-    
-    $this->info("Trouvé {$response->count()} suggestions :");
-    
-    foreach ($response->getSuggestions() as $suggestion) {
-        $this->line("📍 {$suggestion->getFullName()}");
-    }
+Artisan::command('mapbox:search {query}', function ($query) {
+    $this->comment('Mapbox search command');
+
+    $response = MapboxClient::client()
+        ->autocomplete(fn($req) => $req
+            ->query($query)
+            ->options(fn($options) => $options
+                ->types([PlaceType::PLACE->value])
+                ->limit(2)
+                ->country('FR')
+                ->language('fr')))
+        ->call();
 });
 ```
 ## 🧪 Tests
@@ -220,28 +200,6 @@ Artisan::command('mapbox:test', function () {
 ```bash
 composer test
 ```
-
-## 📚 API Reference
-
-### Classes principales
-
-- **`Mapbox`** - Facade principale
-- **`SuggestRequest`** - Requête de suggestion
-- **`SearchOptions`** - Options de recherche typées
-- **`SearchMapboxResponse`** - Réponse de l'API
-- **`Suggestion`** - Suggestion individuelle
-- **`PlaceType`** - Enum des types de lieux
-
-### Méthodes utiles
-
-#### SearchMapboxResponse
-- `getSuggestions()` - Collection de suggestions
-- `getFirstSuggestion()` - Première suggestion
-- `count()` - Nombre de résultats
-- `isEmpty()` - Vérifier si vide
-
-#### Suggestion
-- `getFullName()` - Nom complet avec localisation
 
 ## 🤝 Contribution
 
