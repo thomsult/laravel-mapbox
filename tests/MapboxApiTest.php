@@ -7,6 +7,15 @@ use Illuminate\Support\Str;
 
 uses(TestCase::class)->in(__DIR__);
 
+test('debug environment variables', function () {
+    dump([
+        'env()' => env('MAPBOX_ACCESS_TOKEN'),
+        '$_ENV' => $_ENV['MAPBOX_ACCESS_TOKEN'] ?? 'not set',
+        '$_SERVER' => $_SERVER['MAPBOX_ACCESS_TOKEN'] ?? 'not set',
+        'getenv()' => getenv('MAPBOX_ACCESS_TOKEN'),
+        'config()' => config('mapbox.access_token'),
+    ]);
+});
 
 test('it has correct access token configured', function () {
     expect(config('mapbox.access_token'))->not->toBeEmpty();

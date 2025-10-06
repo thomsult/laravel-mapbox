@@ -59,6 +59,5 @@ jobs:
     - name: Run Pest Tests
       run: |
         cd temp-laravel
+        export MAPBOX_ACCESS_TOKEN="${{ secrets.MAPBOX_ACCESS_TOKEN }}"
         php artisan test ./vendor/thomsult/laravel-mapbox/tests --debug
-      env:
-        MAPBOX_ACCESS_TOKEN: ${{ secrets.MAPBOX_ACCESS_TOKEN }}
