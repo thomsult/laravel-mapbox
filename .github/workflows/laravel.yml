@@ -51,8 +51,16 @@ jobs:
         php -r "file_exists('.env') || copy('.env.example', '.env');"
         php artisan key:generate
 
+    - name: Install Pest
+      run: |
+        cd temp-laravel
+        composer require pestphp/pest --dev --with-all-dependencies
     # 8️⃣ Installe Pest si nécessaire et exécute les tests
     - name: Run Pest Tests
       run: |
         cd temp-laravel
         php artisan test ./vendor/thomsult/laravel-mapbox/tests --debug
+    - name: Run Package Tests
+      run: |
+        cd temp-laravel
+        vendor/bin/pest ./vendor/thomsult/laravel-mapbox/tests --debug
