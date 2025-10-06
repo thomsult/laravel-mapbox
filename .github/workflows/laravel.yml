@@ -14,11 +14,11 @@ jobs:
     # 1️⃣ Récupère le code source du package
     - uses: actions/checkout@v4
 
-    # 2️⃣ Installe PHP 8.2 (minimum requis pour Laravel 12) et les extensions nécessaires
+    # 2️⃣ Installe PHP 8.3
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.2'
+        php-version: '8.3'
         extensions: mbstring, intl, bcmath
 
     # 3️⃣ Met en cache les dépendances Composer
