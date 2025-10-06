@@ -13,29 +13,26 @@ use Thomsult\LaravelMapbox\Interfaces\MapboxOptionsInterface;
 class ReverseOptions extends AbstractOption implements MapboxOptionsInterface
 {
 
-  protected ?string $language = null;
   protected ?int $limit = null;
   protected ?string $country = null;
-  protected ?string $types = null;
+  protected ?array $types = null;
 
 
-  public function language(string $language): self
-  {
-    $this->language = $language;
-    return $this;
-  }
   public function limit(int $limit): self
   {
+    $this->validate($limit, 'limit', ['required', 'integer', 'min:1','max:10']);
     $this->limit = $limit;
     return $this;
   }
   public function country(string $country): self
   {
+    $this->validate($country, 'country', ['required', 'string', 'max:2']);
     $this->country = $country;
     return $this;
   }
-  public function types(string $types): self
+  public function types(array $types): self
   {
+    $this->validate($types, 'types', ['required', 'array']);
     $this->types = $types;
     return $this;
   }

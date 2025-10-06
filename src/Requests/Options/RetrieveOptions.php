@@ -12,28 +12,26 @@ use Thomsult\LaravelMapbox\Interfaces\MapboxOptionsInterface;
 class RetrieveOptions extends AbstractOption implements MapboxOptionsInterface
 {
 
-  protected ?string $language = null;
   protected ?string $eta_type = null;
   protected ?string $navigation_profile = null;
   protected ?string $origin = null;
 
-  public function language(string $language): self
-  {
-    $this->language = $language;
-    return $this;
-  }
+
   public function etaType(string $etaType): self
   {
+    $this->validate($etaType, 'eta_type', ['required', 'string']);
     $this->eta_type = $etaType;
     return $this;
   }
   public function navigationProfile(string $navigationProfile): self
   {
+    $this->validate($navigationProfile, 'navigation_profile', ['required', 'string']);
     $this->navigation_profile = $navigationProfile;
     return $this;
   }
   public function origin(string $origin): self
   {
+    $this->validate($origin, 'origin', ['required', 'string']);
     $this->origin = $origin;
     return $this;
   }

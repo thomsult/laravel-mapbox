@@ -2,6 +2,7 @@
 
 namespace Thomsult\LaravelMapbox\Requests;
 
+use Illuminate\Support\Facades\Validator;
 use Thomsult\LaravelMapbox\Builder\BodyBuilder;
 use Thomsult\LaravelMapbox\Builder\UrlBuilder;
 use Thomsult\LaravelMapbox\Interfaces\MapboxOptionsInterface;
@@ -19,6 +20,14 @@ class AbstractRequest implements MapboxRequestInterface
 
   public function __construct(?string $method = "GET", ?string $endpoint = '')
   {
+    $validator = Validator::make(['method' => $method, 'endpoint' => $endpoint], [
+      'method' => ['required', 'string', 'in:GET,POST'],
+      'endpoint' => ['required', 'string']
+    ]);
+
+    if ($validator->fails()) {
+      throw new \InvalidArgumentException($validator->errors());
+    }
     $this->method = $method;
     $this->uri = UrlBuilder::build($endpoint);
     $this->query = '';
@@ -28,6 +37,15 @@ class AbstractRequest implements MapboxRequestInterface
 
   public function query(string $query): self
   {
+
+    $validator = Validator::make(['query' => $query], [
+      'query'  => ['required', 'string', 'min:3', 'max:255', 'not_in:{query}']
+    ]);
+
+    if ($validator->fails()) {
+      throw new \InvalidArgumentException($validator->errors()->first('query'));
+    }
+
     $this->query = $query;
     return $this;
   }

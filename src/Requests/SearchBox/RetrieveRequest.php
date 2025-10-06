@@ -2,6 +2,7 @@
 
 namespace Thomsult\LaravelMapbox\Requests\SearchBox;
 
+use Illuminate\Support\Facades\Validator;
 use Thomsult\LaravelMapbox\Requests\AbstractRequest;
 
 use Thomsult\LaravelMapbox\Requests\Options\RetrieveOptions;
@@ -21,6 +22,14 @@ class RetrieveRequest extends AbstractRequest
   }
   public function id(string $id): self
   {
+    $validator = Validator::make(['id' => $id], [
+      'id' => ['required', 'string', 'uuid']
+    ]);
+
+    if ($validator->fails()) {
+      throw new \InvalidArgumentException($validator->errors());
+    }
+
     $this->id = $id;
     return $this;
   }

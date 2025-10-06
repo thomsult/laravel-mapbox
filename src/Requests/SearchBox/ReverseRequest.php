@@ -2,6 +2,7 @@
 
 namespace Thomsult\LaravelMapbox\Requests\SearchBox;
 
+use Illuminate\Support\Facades\Validator;
 use Thomsult\LaravelMapbox\Requests\AbstractRequest;
 
 use Thomsult\LaravelMapbox\Requests\Options\ReverseOptions;
@@ -24,11 +25,27 @@ class ReverseRequest extends AbstractRequest
   }
   public function latitude(float $latitude): self
   {
+    $validator = Validator::make(['latitude' => $latitude], [
+      'latitude' => ['required', 'numeric', 'between:-90,90']
+    ]);
+
+    if ($validator->fails()) {
+      throw new \InvalidArgumentException($validator->errors());
+    }
+
     $this->latitude = $latitude;
     return $this;
   }
   public function longitude(float $longitude): self
   {
+    $validator = Validator::make(['longitude' => $longitude], [
+      'longitude' => ['required', 'numeric', 'between:-180,180']
+    ]);
+
+    if ($validator->fails()) {
+      throw new \InvalidArgumentException($validator->errors());
+    }
+
     $this->longitude = $longitude;
     return $this;
   }

@@ -2,6 +2,7 @@
 
 namespace Thomsult\LaravelMapbox\Requests\Options;
 
+use Exception;
 use Thomsult\LaravelMapbox\Enums\PlaceType;
 use Thomsult\LaravelMapbox\Interfaces\MapboxOptionsInterface;
 
@@ -15,9 +16,16 @@ class BatchOptions extends AbstractOption implements MapboxOptionsInterface
 
   protected ?string $permanent = null;
 
-  public function permanent(string $permanent): self
+  public function permanent(bool $value): self
   {
-    $this->permanent = $permanent;
+    $this->validate($value, 'permanent', ['required', 'boolean']);
+    $this->permanent = $value ? 'true' : 'false';
+    return $this;
+  }
+  public function language(string $language): self
+  {
+    throw new Exception("Not Implemented", 1);
+
     return $this;
   }
 }

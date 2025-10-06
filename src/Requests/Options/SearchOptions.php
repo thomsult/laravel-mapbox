@@ -14,7 +14,6 @@ class SearchOptions extends AbstractOption implements MapboxOptionsInterface
   protected ?array $types = null;
   protected ?int $limit = null;
   protected ?string $country = null;
-  protected ?string $language = null;
 
   protected ?string $proximity = null;
   protected ?string $bbox = null;
@@ -26,56 +25,61 @@ class SearchOptions extends AbstractOption implements MapboxOptionsInterface
 
   public function types(array $types): self
   {
+    $this->validate($types, 'types', ['required', 'array']);
     $this->types = $types;
     return $this;
   }
   public function limit(int $limit): self
   {
+    $this->validate($limit, 'limit', ['required', 'integer', 'min:1', 'max:10']);
     $this->limit = $limit;
     return $this;
   }
   public function country(string $country): self
   {
+    $this->validate($country, 'country', ['required', 'string', 'max:2']);
     $this->country = $country;
-    return $this;
-  }
-  public function language(string $language): self
-  {
-    $this->language = $language;
     return $this;
   }
   public function proximity(string $proximity): self
   {
+    $this->validate($proximity, 'proximity', ['required', 'string']);
     $this->proximity = $proximity;
     return $this;
   }
   public function bbox(string $bbox): self
   {
+    $this->validate($bbox, 'bbox', ['required', 'string']);
     $this->bbox = $bbox;
     return $this;
   }
   public function poiCategory(string $poiCategory): self
   {
+    $this->validate($poiCategory, 'poi_category', ['required', 'string']);
     $this->poi_category = $poiCategory;
     return $this;
   }
   public function poiCategoryExclusions(string $poiCategoryExclusions): self
   {
+    $this->validate($poiCategoryExclusions, 'poi_category_exclusions', ['required', 'string']);
     $this->poi_category_exclusions = $poiCategoryExclusions;
     return $this;
   }
   public function etaType(string $etaType): self
   {
+    $this->validate($etaType, 'eta_type', ['required', 'string']);
     $this->eta_type = $etaType;
     return $this;
   }
   public function navigationProfile(string $navigationProfile): self
   {
+    $this->validate($navigationProfile, 'navigation_profile', ['required', 'string']);
     $this->navigation_profile = $navigationProfile;
     return $this;
   }
   public function origin(string $origin): self
   {
+    $this->validate($origin, 'origin', ['required', 'string']);
     $this->origin = $origin;
     return $this;
   }

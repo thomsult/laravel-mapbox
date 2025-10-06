@@ -13,41 +13,41 @@ use Thomsult\LaravelMapbox\Interfaces\MapboxOptionsInterface;
 class ReverseGeocodingOptions extends AbstractOption implements MapboxOptionsInterface
 {
 
-  protected ?string $permanent = null;
+  protected ?bool $permanent = null;
   protected ?string $language = null;
   protected ?int $limit = null;
   protected ?string $country = null;
-  protected ?string $types = null;
+  protected ?array $types = null;
   protected ?string $worldview = null;
 
 
-  public function permanent(string $permanent): self
+  public function permanent(bool $permanent): self
   {
-    $this->permanent = $permanent;
-    return $this;
-  }
-  public function language(string $language): self
-  {
-    $this->language = $language;
+    $this->validate($permanent, 'permanent', ['required', 'boolean']);
+    $this->permanent = $permanent ? 'true' : 'false';
     return $this;
   }
   public function limit(int $limit): self
   {
+    $this->validate($limit, 'limit', ['required', 'integer', 'min:1', 'max:5']);
     $this->limit = $limit;
     return $this;
   }
   public function country(string $country): self
   {
+    $this->validate($country, 'country', ['required', 'string', 'max:2']);
     $this->country = $country;
     return $this;
   }
-  public function types(string $types): self
+  public function types(array $types): self
   {
+    $this->validate($types, 'types', ['required', 'array']);
     $this->types = $types;
     return $this;
   }
   public function worldview(string $worldview): self
   {
+    $this->validate($worldview, 'worldview', ['required', 'string', 'in:ar,cn,in,jp,ma,rs,ru,tr,us']);
     $this->worldview = $worldview;
     return $this;
   }
