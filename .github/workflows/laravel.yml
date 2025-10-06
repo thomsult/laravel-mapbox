@@ -55,4 +55,4 @@ jobs:
     - name: Run Pest Tests
       run: |
         cd temp-laravel
-        vendor/bin/pest ./vendor/thomsult/laravel-mapbox/tests --debug
+        ./vendor/bin/pest ./vendor/thomsult/laravel-mapbox/tests --debug
