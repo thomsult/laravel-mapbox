@@ -15,6 +15,7 @@ Un package Laravel élégant et typé pour intégrer les APIs Mapbox (geocoding,
 - ⚡ **Laravel intégré** - Service Provider, Facade, Configuration, Cache, Rate Limiting, Lock
 - 🧪 **Testé** - Tests unitaires et d'intégration
 
+[![Laravel Package CI](https://github.com/thomsult/laravel-mapbox/actions/workflows/laravel.yml/badge.svg)](https://github.com/thomsult/laravel-mapbox/actions/workflows/laravel.yml)
 ## 📋 Prérequis
 
 - PHP 8.1+
