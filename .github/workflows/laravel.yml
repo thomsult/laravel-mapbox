@@ -8,22 +8,40 @@ on:
 
 jobs:
   laravel-tests:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+    # 1️⃣ Récupère le code source
+    - uses: actions/checkout@v4
+
+    # 2️⃣ Installe PHP 8.3 et les extensions nécessaires
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
       with:
         php-version: '8.3'
-    - uses: actions/checkout@v4
+        extensions: mbstring, intl, bcmath
+        coverage: none
+
+    # 3️⃣ Copie le fichier .env si absent
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-    - name: Composer Update
-      run: composer update
+
+    # 4️⃣ Met en cache les dépendances Composer pour accélérer les builds
+    - name: Cache Composer dependencies
+      uses: actions/cache@v4
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-php-
+
+    # 5️⃣ Installe les dépendances PHP
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-    - name: Execute tests (Unit and Feature tests) via Pest
-      env:
-        DB_CONNECTION: sqlite
-        DB_DATABASE: database/database.sqlite
+      run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+    # 6️⃣ Génère la clé d’application Laravel
+    - name: Generate Application Key
+      run: php artisan key:generate
+
+    # 7️⃣ Exécute les tests (avec Pest ou PHPUnit)
+    - name: Run Tests
       run: composer test
