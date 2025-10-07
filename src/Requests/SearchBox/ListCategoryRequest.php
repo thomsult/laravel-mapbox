@@ -8,7 +8,7 @@ use Thomsult\LaravelMapbox\Requests\Options\ListCategoryOptions;
 
 class ListCategoryRequest extends AbstractRequest
 {
-  public function options(?callable $builder = null): self
+  public function options(?callable $builder = null): static
   {
     $this->options = $builder ? $builder(new ListCategoryOptions()) : null;
     return $this;

@@ -16,7 +16,7 @@ class BatchRequest extends AbstractRequest
 {
 
 
-  public function options(?callable $builder = null): self
+  public function options(?callable $builder = null): static
   {
     $this->options = $builder ? $builder(new BatchOptions()) : null;
     return $this;

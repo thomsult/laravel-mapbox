@@ -16,7 +16,7 @@ use Thomsult\LaravelMapbox\Traits\BatchRequestTrait;
 class ForwardTextRequest extends AbstractRequest
 {
   use BatchRequestTrait;
-  public function options(?callable $builder = null): self
+  public function options(?callable $builder = null): static
   {
     $this->options = $builder ? $builder(new ForwardGeocodingTextOptions()) : null;
     return $this;

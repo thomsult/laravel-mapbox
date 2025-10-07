@@ -14,7 +14,7 @@ use Thomsult\LaravelMapbox\Requests\Options\SearchOptions;
 class SearchRequest extends AbstractRequest
 {
 
-  public function options(?callable $builder = null): self
+  public function options(?callable $builder = null): static
   {
     $this->options = $builder ? $builder(new SearchOptions()) : null;
     return $this;

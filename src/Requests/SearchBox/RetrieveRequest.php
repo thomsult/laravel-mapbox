@@ -37,7 +37,7 @@ class RetrieveRequest extends AbstractRequest
   {
     return $this->uri . $this->id;
   }
-  public function options(?callable $builder = null): self
+  public function options(?callable $builder = null): static
   {
     $this->options = $builder ? $builder(new RetrieveOptions()) : null;
     return $this;

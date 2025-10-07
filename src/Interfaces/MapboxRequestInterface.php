@@ -8,7 +8,7 @@ interface MapboxRequestInterface
    * @param string $query
    * @return self
    */
-  public function query(string $query): self;
+  public function query(string $query): static;
 
   /**
    * @return array
@@ -19,7 +19,7 @@ interface MapboxRequestInterface
    * @param callable|null $builder
    * @return self
    */
-  public function options(?callable $builder = null): self;
+  public function options(?callable $builder = null): static;
 
   /**
    * @return array
@@ -30,7 +30,7 @@ interface MapboxRequestInterface
    * @param callable|array $builder
    * @return self
    */
-  public function body(?callable $builder = null): self;
+  public function body(?callable $builder = null): static;
 
   /**
    * @return array

@@ -36,7 +36,7 @@ class CategoryRequest extends AbstractRequest
   {
     return $this->uri . $this->id;
   }
-  public function options(?callable $builder = null): self
+  public function options(?callable $builder = null): static
   {
     $this->options = $builder ? $builder(new CategoryOptions()) : null;
     return $this;

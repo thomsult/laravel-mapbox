@@ -19,7 +19,7 @@ class ReverseRequest extends AbstractRequest
   protected float $longitude;
   protected float $latitude;
 
-  public function options(?callable $builder = null): self
+  public function options(?callable $builder = null): static
   {
     $this->options = $builder ? $builder(new ReverseGeocodingOptions()) : null;
     return $this;
